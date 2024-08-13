@@ -1,7 +1,8 @@
 {
 	"compilerOptions": {
 		"module": "commonjs",
-		"jsx": "react",
+		"lib": ["dom", "es2017"],
+		"jsx": "react-jsx",
 		"strict": true,
 		"esModuleInterop": true,
 		"skipLibCheck": true,
