@@ -1,6 +1,7 @@
 import { z } from "zod"
 
 export const ItemSchema = z.object({
+	// Custom cart fields
 	type: z.string(),
 	date: z.number().optional(),
 	validite: z.number().optional(),
@@ -8,6 +9,7 @@ export const ItemSchema = z.object({
 	data: z.string().optional(),
 	price: z.number(),
 
+	// Dolibarr fields
 	product_type: z.enum(["0", "1"]), // 0 = produit, 1 = service
 	fk_product: z.number().optional(), // Id [produit existant]
 	label: z.string().optional(), // Label [ligne libre]

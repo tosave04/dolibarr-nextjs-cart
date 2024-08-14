@@ -1,6 +1,21 @@
-import type { Item } from "../types/ItemInterface"
-import type { Cart } from "../types/CartInterface"
+import type { Cart, Item } from "../types"
 
+/**
+ * Calculates the total values for a cart based on its items.
+ *
+ * This function processes an array of items and calculates several totals:
+ * - `total_ht`: Total amount before tax (excluding VAT)
+ * - `total_tva`: Total amount of VAT
+ * - `total_ttc`: Total amount including VAT
+ * - `references_qty`: Total number of unique items
+ * - `items_qty`: Total quantity of all items
+ *
+ * Each item's total amount before tax, VAT, and total amount including tax are calculated based on its
+ * quantity, price, and VAT rate. The results are accumulated and returned.
+ *
+ * @param {Item[]} items - An array of items, where each item includes properties such as quantity, price, and VAT rate.
+ * @returns {Omit<Cart, "items">} An object containing the computed totals for the cart.
+ */
 export function countCart(items: Item[]): Omit<Cart, "items"> {
 	const totaux = items.reduce(
 		(acc, item) => {
