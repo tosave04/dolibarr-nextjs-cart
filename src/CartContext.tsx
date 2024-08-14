@@ -2,11 +2,11 @@
 
 import { createContext, useContext, useState } from "react"
 import { countCart } from "./utils/countCart"
-import { deepCopyFunction } from "./utils/tosave"
+import { deepCopyFunction } from "@tosave04/tosave-utils-ts"
 import type { Cart } from "./types/CartInterface"
 import type { Item } from "./types/ItemInterface"
 
-const DEFAULT_CART = { articles: [], ...countCart([]) } as Cart
+const DEFAULT_CART = { items: [], ...countCart([]) } as Cart
 const USE_LOCAL_STORAGE = false
 const USE_SESSION_STORAGE = false
 
@@ -27,15 +27,15 @@ export function CartProvider({ children }: { children: React.ReactNode }): JSX.E
 	/**
 	 * Adds one or more items to the cart.
 	 */
-	const addItems = (articles?: Item | Item[]) => {
-		const newCart = deepCopyFunction(cart.articles)
+	const addItems = (items?: Item | Item[]) => {
+		const newCart = deepCopyFunction(cart.items)
 
-		if (Array.isArray(articles)) {
-			if (articles.length === 0) return false
-			else for (const article of articles) newCart.push(article)
+		if (Array.isArray(items)) {
+			if (items.length === 0) return false
+			else for (const item of items) newCart.push(item)
 		} else {
-			if (!articles) return false
-			else newCart.push(articles)
+			if (!items) return false
+			else newCart.push(items)
 		}
 
 		return update(newCart)
@@ -44,10 +44,10 @@ export function CartProvider({ children }: { children: React.ReactNode }): JSX.E
 	/**
 	 * Updates the cart with a new list of items.
 	 */
-	const update = (articles: Item[]) => {
+	const update = (items: Item[]) => {
 		try {
-			const totals = countCart(articles)
-			const newCart = { articles, ...totals }
+			const totals = countCart(items)
+			const newCart = { items, ...totals }
 
 			save(newCart)
 			setCart(newCart)
@@ -62,7 +62,7 @@ export function CartProvider({ children }: { children: React.ReactNode }): JSX.E
 	 * Changes the quantity of a specific item in the cart.
 	 */
 	const updateItem = (index: number, qty: number) => {
-		const newCart = deepCopyFunction(cart.articles)
+		const newCart = deepCopyFunction(cart.items)
 
 		newCart[index].qty = qty
 
@@ -79,7 +79,7 @@ export function CartProvider({ children }: { children: React.ReactNode }): JSX.E
 	const searchItem = (search: { fk_product?: number; keyCode?: string; label?: string }) => {
 		if (!Object.keys(search).length) return -1
 
-		return cart.articles.findIndex((item) => {
+		return cart.items.findIndex((item) => {
 			if (search?.fk_product && item?.fk_product !== search.fk_product) return false
 			if (search?.keyCode && !item?.keyCode?.includes(search.keyCode)) return false
 			if (search?.label && !item?.label?.includes(search.label)) return false
@@ -91,11 +91,11 @@ export function CartProvider({ children }: { children: React.ReactNode }): JSX.E
 	 * Deletes an item from the cart based on its index.
 	 */
 	const deleteItem = (index: number) => {
-		const newCartArticles = deepCopyFunction(cart.articles)
+		const newCartItems = deepCopyFunction(cart.items)
 
-		newCartArticles.splice(index, 1)
+		newCartItems.splice(index, 1)
 
-		return update(newCartArticles)
+		return update(newCartItems)
 	}
 
 	/**
@@ -152,7 +152,7 @@ export function CartProvider({ children }: { children: React.ReactNode }): JSX.E
 		return true
 	}
 
-	const isEmpty = !cart?.articles?.length
+	const isEmpty = !cart?.items?.length
 
 	return (
 		<CartContext.Provider
@@ -187,20 +187,20 @@ export interface CartContextType {
 	 * If no item is provided, the function returns false.
 	 * After updating the cart with the new items, it saves the cart and updates the state.
 	 *
-	 * @param articles - The item or array of items to be added to the cart.
+	 * @param items - The item or array of items to be added to the cart.
 	 * @returns A boolean indicating whether the cart was successfully updated.
 	 */
-	addItems: (articles?: Item | Item[]) => boolean
+	addItems: (items?: Item | Item[]) => boolean
 
 	/**
 	 * Updates the cart with a new list of items.
 	 * Calculates the total quantities and prices based on the updated list of items.
 	 * Saves the updated cart and updates the state.
 	 *
-	 * @param articles - The updated list of items to be saved in the cart.
+	 * @param items - The updated list of items to be saved in the cart.
 	 * @returns A boolean indicating whether the cart was successfully updated.
 	 */
-	update: (articles: Item[]) => boolean
+	update: (items: Item[]) => boolean
 
 	/**
 	 * Changes the quantity of a specific item in the cart.

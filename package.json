@@ -43,6 +43,8 @@
     "typescript": "^5.5.4"
   },
   "dependencies": {
+    "@tosave04/dolibarr-utils-ts": "^1.1.1",
+    "@tosave04/tosave-utils-ts": "^1.0.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "zod": "^3.23.8"

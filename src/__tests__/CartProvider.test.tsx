@@ -18,29 +18,29 @@ describe("CartProvider", () => {
 
 	it("should initialize with an empty cart", () => {
 		act(() => result.current?.update([]))
-		expect(result.current?.cart.articles).toEqual([])
+		expect(result.current?.cart.items).toEqual([])
 		expect(result.current?.isEmpty).toBe(true)
 	})
 
 	it("should add an item to the cart", () => {
-		expect(result.current?.cart.articles).toHaveLength(1)
+		expect(result.current?.cart.items).toHaveLength(1)
 		expect(result.current?.isEmpty).toBe(false)
 	})
 
 	it("should update the quantity of an item in the cart", () => {
 		act(() => result.current?.updateItem(0, 5))
-		expect(result.current?.cart.articles[0].qty).toBe(5)
+		expect(result.current?.cart.items[0].qty).toBe(5)
 	})
 
 	it("should remove an item from the cart if quantity is set to zero", () => {
 		act(() => result.current?.updateItem(0, 0))
-		expect(result.current?.cart.articles).toHaveLength(0)
+		expect(result.current?.cart.items).toHaveLength(0)
 		expect(result.current?.isEmpty).toBe(true)
 	})
 
 	it("should delete an item from the cart", () => {
 		act(() => result.current?.deleteItem(0))
-		expect(result.current?.cart.articles).toHaveLength(0)
+		expect(result.current?.cart.items).toHaveLength(0)
 		expect(result.current?.isEmpty).toBe(true)
 	})
 
@@ -49,12 +49,12 @@ describe("CartProvider", () => {
 			result.current?.save(result.current.cart)
 			result.current?.load()
 		})
-		expect(result.current?.cart.articles).toHaveLength(0)
+		expect(result.current?.cart.items).toHaveLength(0)
 	})
 
 	it("should reset the cart to its default state", () => {
 		act(() => result.current?.reset({ withConfirm: false }))
-		expect(result.current?.cart.articles).toHaveLength(0)
+		expect(result.current?.cart.items).toHaveLength(0)
 		expect(result.current?.isEmpty).toBe(true)
 	})
 })
